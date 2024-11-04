@@ -1,0 +1,39 @@
+.main {
+  display: flex;
+
+  &.sidebar-open {
+    .sidebarWrapper {
+      width: 18%;
+    }
+
+    .part1 {
+      width: 18% !important;
+    }
+  }
+
+  &.sidebar-closed {
+    .sidebarWrapper {
+      width: 70px;
+      @media(max-width:640px){
+        width: 0;
+      }
+    }
+
+    .part1 {
+      width: 5% !important;
+    }
+  }
+
+  .sidebarWrapper {
+    width: 18%;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .content {
+    width: 82%;
+    flex: 0 0 82%;
+    flex-grow: 1;
+    transition: all 0.3s ease-in-out;
+
+  }
+}

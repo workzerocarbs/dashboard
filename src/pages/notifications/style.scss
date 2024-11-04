@@ -1,0 +1,66 @@
+@import '../../mixins.scss';
+
+.notification-body {
+    .markRead {
+        background: var(--add-button) !important;
+        padding: 5px 12px;
+        text-transform: capitalize;
+        color: white;
+        border-radius:5px;
+    }
+     
+    .notifications {
+        padding-left: 0;
+        margin-top: 10px;
+        margin-bottom: 0;
+
+        .notification-list {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 15px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+
+            &.viewed {
+                background: var(--heading);
+                color: var(--primary-text);
+            }
+
+            &.not-viewed {
+                background: #f9ebd7;
+                color: #000;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            &:hover {
+                box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.2), inset -1px 0 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgb(95 99 104 / 16%), 0 0 6px 2px rgb(95 99 104 / 15%);
+            }
+
+            .notification-content {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                h5 {
+                    font-size: 16px;
+                    margin-bottom: 0;
+
+                    span {
+                        font-weight: 750;
+                    }
+                }
+            }
+
+            p {
+                font-weight: 650;
+                margin-bottom: 0;
+            }
+        }
+    }
+}

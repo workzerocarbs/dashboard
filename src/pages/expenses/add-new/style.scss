@@ -1,0 +1,107 @@
+@import '../../../mixins.scss';
+
+
+.add-expense-container {
+
+    .category-section {
+        .buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            button {
+                background: var(--add-button);
+                padding: 6px 12px;
+                text-transform: capitalize !important;
+                color: white;
+                border-radius: 5px;
+            }
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            width: 500px;
+
+            label {
+                color: var(--primary-text);
+                font-weight: 570;
+                text-transform: capitalize;
+                margin-bottom: 5px;
+            }
+
+            input {
+                height: 45px;
+                padding: 10px;
+                border: none;
+                outline: none;
+                border-radius: 5px;
+                border: 1.75px solid #8bc70955;
+            }
+
+            button {
+                margin-top: 15px;
+                width: 100px;
+                color: #fff;
+                background: #8cc709 !important;
+            }
+        }
+    }
+
+    form {
+        background: var(--header-background);
+        padding: 20px;
+        margin-top: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+        .expense-form {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+
+            @include md {
+                grid-template-columns: 1fr;
+            }
+
+            .input-field {
+                display: flex;
+                flex-direction: column;
+
+                label {
+                    color: var(--primary-text);
+                    font-weight: 570;
+                    text-transform: capitalize;
+                    margin-bottom: 5px;
+                }
+
+                input,
+                select,
+                textarea {
+                    height: 45px;
+                    padding: 10px;
+                    border: none;
+                    outline: none;
+                    border-radius: 5px;
+                    border: 1.75px solid #8bc70955;
+                    // box-shadow: 0 0 10px rgb(0 0 0 / 10%);
+
+                    &:focus {
+                        box-shadow: none;
+                    }
+                }
+            }
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+
+            button {
+                height: 45px;
+                width: 140px;
+                color: #fff;
+                background: #8cc709 !important;
+            }
+        }
+    }
+}

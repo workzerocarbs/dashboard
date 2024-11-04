@@ -1,0 +1,190 @@
+@import'../../../mixins.scss';
+
+.add-menu-item {
+    form {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+
+        @include sm {
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-text);
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 0;
+            outline: none;
+            border-radius: 5px;
+            background: var(--headerBtn);
+            color: var(--primary-text);
+
+            &:focus{
+                border: 2px solid #b3db5f;
+            }
+        }
+
+        input,
+        select {
+            height: 45px;
+        }
+        .form-select{
+            &:focus{
+                box-shadow: none;
+            }
+        }
+
+        textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        .form-section {
+            flex: 1;
+            padding: 20px 25px;
+            background: var(--heading);
+            border-radius: 0.375rem;
+
+            .descBox {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+
+            .fields {
+                display: grid;
+                grid-template-columns: 49% 49%;
+                gap: 15px;
+                flex-wrap: wrap;
+
+                @include sm {
+                    grid-template-columns: 1fr;
+                    gap: 5px;
+                }
+
+                .inputFields {
+                    display: flex;
+                    flex-direction: column;
+                    margin-bottom: 15px;
+                }
+            }
+
+            .fieldBackgorund {
+                grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+                background-color: var(--secondary-background);
+                padding: 20px 15px;
+                border-radius: 5px;
+
+                @include sm {
+                    grid-template-columns: 1fr;
+
+                }
+            }
+
+            .checkboxField {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                width: 100%;
+                margin: 0 0 10px;
+
+                .inputFields {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+
+                    p {
+                        font-weight: 550;
+                        white-space: nowrap;
+                        margin-bottom: 0;
+                        color: var(--primary-text);
+                        user-select: none;
+                    }
+                }
+            }
+
+            .submit-button {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+
+                button {
+                    width: 120px;
+                    background: rgb(57, 185, 57);
+                    color: #fff;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                }
+            }
+
+            .type-section {
+                margin: 0 0 10px;
+
+                h4 {
+                    color: var(--primary-text);
+                    margin-bottom: 20px;
+                }
+
+                .type-value {
+                    display: flex;
+                    align-items: flex-end;
+                    justify-content: flex-start;
+                    gap: 15px;
+                    margin-bottom: 15px;
+
+                    @include sm {
+                        flex-wrap: wrap;
+                    }
+
+                    .inputFields {
+                        width: 100%;
+
+                        input {
+                            &::placeholder {
+                                color: var(--placeholder);
+                            }
+                        }
+                    }
+
+                    .deleteBtn {
+                        button {
+                            cursor: pointer;
+                        }
+                    }
+                }
+
+                .addNewTypeBtn {
+                    margin-top: 25px;
+
+                    button {
+                        background: var(--add-button) !important;
+                        color: #fff;
+                        height: 45px;
+                        width: 100px;
+                        font-size: 15px;
+                        border-radius: 6px;
+                        text-transform: capitalize;
+                    }
+                }
+            }
+        }
+
+        .nutrition-form{
+            margin-top: 15px;
+        }
+    }
+
+    .error{
+        padding-top: 5px;
+        margin-bottom: 0;
+        color: red;
+    }
+}

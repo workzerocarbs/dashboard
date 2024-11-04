@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+:root {
+  --background: #ebe9e982;
+  --primary-text: #000;
+  --header-background: #fff;
+  --sidebar-background: #fff;
+  --primary-text: #000;
+  --sidebar-text: #000;
+  --sidebar-icon: #000;
+  --submenu-text: #333;
+  --submenu-before: rgb(0, 0, 0, 0.23);
+  --headerBtn: #ecf2ff;
+  --placeholder: rgba(0, 0, 0, 0.6);
+  --input-color: #292929;
+  --heading: #fff;
+  --add-button: rgba(90, 90, 255, 0.712);
+  --box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0), 0 2px 10px 0 rgba(0, 0, 0, .2);
+  --price-background: #f1f1f1;
+  --secondary-background: #5555554f;
+  --order-request: #fff2d9b0;
+  --paid-text: #0011ff;
+  --order-tabs: rgba(128, 128, 128, 0.733);
+  --add-time: #ebe9e9a8;
+  --filter-drop: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.32));
+}
+
+[data-theme="dark"] {
+  --background: #071739;
+  --primary-text: #fff;
+  --header-background: #112143;
+  --sidebar-background: #112143;
+  --primary-text: #fff;
+  --sidebar-text: #fff;
+  --sidebar-icon: #fff;
+  --submenu-text: #d6d6d6;
+  --submenu-before: rgba(255, 255, 255, 0.685);
+  --headerBtn: #163474;
+  --placeholder: rgba(255, 255, 255, 0.6);
+  --input-color: #fff;
+  --heading: #16347463;
+  --add-button: rgb(255 255 255 / 40%);
+  --box-shadow: 0 2px 5px 0 rgb(254 252 252 / 30%), 0 2px 10px 0 rgb(255 255 255 / 30%);
+  --price-background: #f8f8f867;
+  --secondary-background: rgb(143 143 143 / 7%);
+  --order-request: rgb(255 215 138 / 69%);
+  --paid-text: #ffd600;
+  --order-tabs: rgb(170, 169, 169);
+  --add-time: #04215e;
+  --filter-drop: drop-shadow(0px 2px 8px rgba(255, 255, 255, 0.466));
+}
+
+body[data-theme="dark"] {
+  background: var(--background);
+  color: var(--primary-text);
+  transition: all 0.5s;
+}
+
+body[data-theme="light"] {
+  background: var(--background);
+  color: var(--primary-text);
+  transition: all 0.5s;
+}
+
+ul {
+  list-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

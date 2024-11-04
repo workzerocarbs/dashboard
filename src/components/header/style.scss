@@ -1,0 +1,337 @@
+@import "../../mixins.scss";
+
+header {
+  width: 100%;
+  height: 80px;
+  background: var(--header-background);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: all 0.5s;
+
+  @include sm {
+    height: 70px;
+  }
+
+  .row {
+    margin: 0;
+
+    @include sm {
+      justify-content: space-between;
+      align-items: center !important;
+    }
+
+    .logo {
+      width: 100%;
+      height: 50px;
+
+      @include sm {
+        height: 40px;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .logoIcon {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    button.rounded-circle {
+      min-width: 40px !important;
+      width: 40px !important;
+      height: 40px !important;
+      background: var(--headerBtn) !important;
+      transition: all 0.5s;
+
+      @include sm {
+        margin-left: 5px !important;
+        margin-right: 0 !important;
+
+      }
+
+      &:hover {
+        transition: all 0.2s ease-in-out;
+
+        svg {
+          color: #8ec80f;
+        }
+      }
+
+      svg {
+        color: var(--sidebar-icon);
+      }
+    }
+
+    .notification-button {
+      position: relative;
+
+      .notification-bell {
+        animation: shake 1.2s forwards infinite;
+      }
+
+      .notification-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #8ec80f;
+        color: white;
+        border-radius: 50%;
+        font-size: 11px;
+        font-weight: 550;
+      }
+    }
+
+    @keyframes shake {
+      0% {
+        transform: rotate(15deg);
+      }
+
+      20% {
+        transform: rotate(-15deg);
+      }
+
+      30% {
+        transform: rotate(15deg);
+      }
+
+      50% {
+        transform: rotate(0deg);
+      }
+    }
+
+    .profileWrapper {
+      margin-left: 5px;
+
+      .profile {
+        padding: 0;
+        min-width: auto;
+
+        .userImage {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          width: 40px;
+          height: 40px;
+          border: 2.5px solid #8cc70a;
+          padding: 1.5px;
+          border-radius: 100%;
+
+          @include sm {
+            width: 35px;
+            height: 35px;
+          }
+
+          .rounded-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 99%;
+            height: 99%;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+
+            img {
+              width: 99%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+        }
+      }
+
+      .profile .userInfo {
+        padding-left: 10px;
+
+        @include sm {
+          display: none;
+        }
+
+        h4 {
+          color: var(--primary-text);
+          text-transform: capitalize;
+          font-size: 16px;
+          font-weight: 500;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .logoutModal {
+    .content {
+      margin-top: 25px;
+      text-align: center;
+
+      svg {
+        color: #8ec80f;
+      }
+
+      h2 {
+        font-size: 34px;
+        font-weight: 550;
+
+        @include sm {
+          font-size: 26px;
+        }
+      }
+
+      h5 {
+        color: rgb(41, 41, 41);
+        font-weight: 400;
+
+        @include sm {
+          font-size: 18px;
+        }
+      }
+    }
+
+    .confirmBtn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 30px;
+
+      button {
+        width: 130px;
+        height: 45px;
+        color: #ffffff;
+      }
+
+      .no-btn {
+        background: red;
+      }
+
+      .yes-btn {
+        background: #4360df;
+      }
+    }
+  }
+
+  .resetPassword {
+    .content {
+      h2 {
+        color: black;
+        font-size: 24px;
+        margin-bottom: 0;
+
+      }
+
+      form {
+        padding: 20px 0 5px;
+
+        .input {
+          display: flex;
+          flex-direction: column;
+
+          label {
+            color: #000;
+            font-weight: 550;
+          }
+
+          input {
+            height: 50px;
+            width: 100%;
+            margin-top: 5px;
+            margin-bottom: 18px;
+            padding: 0 12px;
+            outline: none;
+            font-size: 14px;
+            border: 1.5px solid grey;
+            border-radius: 8px;
+          }
+        }
+
+        button {
+          width: 100%;
+          height: 50px;
+          margin-top: 10px;
+          color: #fff;
+          background: #8cc709;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+}
+
+.logoutBtn {
+  color: red !important;
+
+  svg {
+    color: red;
+  }
+}
+
+.part1,
+.part2,
+.part3 {
+  transition: width 0.5s ease;
+}
+
+.sidebar-closed {
+  .part1 {
+    width: 3%;
+    padding: 0 0 0 4px;
+
+    @include sm {
+      width: 18.666667%;
+      padding: 0;
+    }
+  }
+
+  .part2 {
+    @include sm {
+      width: 19%;
+      padding: 0;
+    }
+  }
+
+  .part3 {
+    width: 71%;
+
+    @include sm {
+      width: 62.3333%;
+    }
+  }
+}
+
+.sidebar-open {
+  .part1 {
+    width: 16.66666667%;
+
+    @include sm {
+      width: 18.666667%;
+      padding: 0;
+    }
+  }
+
+  .part2 {
+    @include sm {
+      width: 19%;
+      padding: 0;
+    }
+  }
+
+  .part3 {
+    width: 58.33333333%;
+
+    @include sm {
+      width: 62.3333%;
+    }
+  }
+}

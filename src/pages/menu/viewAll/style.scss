@@ -1,0 +1,34 @@
+@import '../../../mixins.scss';
+
+.viewAllContainer {
+    display: flex;
+    align-items: flex-start;
+
+    @include md {
+        flex-direction: column;
+    }
+
+    .left-panel {
+        width: 23%;
+        border-right: 1px solid #8bc709a6;
+
+        @include md {
+            width: 100%;
+            border-bottom: 1px solid #8bc709a6;
+            border-right: 0;
+        }
+    }
+
+    .right-panel {
+        width: 100%;
+        padding: 0 20px;
+
+        @include lg {
+            padding-right: 0;
+        }
+
+        @include md {
+            padding: 0;
+        }
+    }
+}

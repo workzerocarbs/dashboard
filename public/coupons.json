@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "title": "Trynew",
+        "discount": 10,
+        "desc": "Use code TRYNEW & get 10% off on orders above 129.",
+        "status": "active",
+        "minOrderValue" : 199
+    },
+    {
+        "id": 2,
+        "title": "flatdeal",
+        "discount": 100,
+        "desc": "Use code FLATDEAL & get FLAT 100% off on orders above 599",
+        "status": "inactive",
+        "minOrderValue" : 199
+    },
+    {
+        "id": 3,
+        "title": "Trynew",
+        "discount": 10,
+        "desc": "Use code TRYNEW & get 10% off on orders above 129.",
+        "status": "active",
+        "minOrderValue" : 199
+    },
+    {
+        "id": 4,
+        "title": "Trynew",
+        "discount": 10,
+        "desc": "Use code TRYNEW & get 10% off on orders above 129.",
+        "status": "inactive",
+        "minOrderValue" : 199
+    },
+    {
+        "id": 5,
+        "title": "Trynew",
+        "discount": 10,
+        "desc": "Use code TRYNEW & get 10% off on orders above 129.",
+        "status": "active",
+        "minOrderValue" : 199
+    }
+]

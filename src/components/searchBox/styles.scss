@@ -1,0 +1,32 @@
+@import "../../mixins.scss";
+
+.searchBox {
+    width: 400px;
+    height: 40px;
+    background: var(--headerBtn);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 3px 15px;
+
+    @include md{
+        display: none;
+    }
+    .icon {
+        color: var(--input-color);
+    }
+
+    input {
+        background: transparent;
+        border: 0;
+        width: 100%;
+        outline: none;
+        padding-left: 5px;
+        color: var(--input-color);
+        font-size: 15px;
+    }
+
+    input::-webkit-input-placeholder {
+        color: var(--placeholder);
+    }
+}

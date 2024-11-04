@@ -1,0 +1,138 @@
+@import "../../../mixins.scss";
+
+
+.categoryForm {
+    margin-bottom: 25px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    input {
+        width: 30%;
+        height: 45px;
+        color: var(--input-color);
+        border: 0;
+        border-radius: 6px;
+        background: var(--headerBtn);
+        outline: none;
+        padding-left: 12px;
+        font-size: 15px;
+        margin-right: 10px;
+
+        @include sm {
+            width: 100%;
+        }
+    }
+
+    input::-webkit-input-placeholder {
+        color: var(--placeholder);
+    }
+
+    button {
+        background: var(--add-button) !important;
+        color: #fff;
+        height: 45px;
+        width: 100px;
+        font-size: 15px;
+        border-radius: 6px;
+        text-transform: capitalize;
+
+        @include sm {
+            width: 90px;
+        }
+    }
+}
+
+.categoriesList {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+        width: 40%;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding: 12px 16px;
+        border-radius: 5px;
+        box-shadow: 2px 0px 8px 0px rgba(138, 136, 138, 0.356);
+        -webkit-box-shadow: 2px 0px 8px 0px rgba(138, 136, 138, 0.356);
+        -moz-box-shadow: 2px 0px 8px 0px rgba(138, 136, 138, 0.356);
+
+        @include sm {
+            width: 100%;
+        }
+
+        .buttons-group {
+            button {
+                min-width: 40px !important;
+                width: 40px !important;
+                height: 40px !important;
+                background: var(--headerBtn) !important;
+                margin-right: 10px;
+                border-radius: 6px;
+                transition: all 0.5s;
+
+                svg {
+                    color: var(--sidebar-icon);
+                }
+            }
+
+            .deleteBtn {
+                svg {
+                    color: red;
+
+                }
+            }
+        }
+
+        .category-items-container {
+            position: absolute;
+            left: 0;
+            top: 100%;
+            width: 100%;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 1;
+            transition: all 0.3s ease-in;
+        }
+
+        .editCategoryName {
+            width: 100%;
+            display: flex;
+            align-items: center;
+
+            input {
+                width: 85%;
+                height: 45px;
+                color: var(--input-color);
+                border: 0;
+                border-radius: 6px;
+                background: var(--headerBtn);
+                outline: none;
+                padding-left: 12px;
+                font-size: 15px;
+                margin-right: 10px;
+            }
+
+            button {
+                background: rgb(57, 185, 57);
+                color: #fff;
+                height: 44px;
+                width: 100px;
+                font-size: 15px;
+                border-radius: 6px;
+                text-transform: capitalize;
+            }
+        }
+
+        .categories-name {
+            padding: 10px;
+            color: #699903;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+    }
+}

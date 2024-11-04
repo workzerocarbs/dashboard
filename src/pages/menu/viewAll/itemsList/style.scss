@@ -1,0 +1,32 @@
+@import '../../../../mixins.scss';
+
+.item-list {
+    list-style-type: none;
+    padding: 0;
+
+    @include md {
+        display: flex;
+        align-items: center;
+    }
+
+
+    li {
+        color: var(--primary-text);
+        font-weight: 550;
+        padding: 10px;
+        cursor: pointer;
+        margin-bottom: 5px;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        text-transform: capitalize;
+
+        &:hover {
+            background-color: #8bc709a6;
+        }
+
+        &.active {
+            background-color: #8bc709a6;
+        }
+    }
+
+}

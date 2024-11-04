@@ -1,0 +1,92 @@
+@import'../../../mixins.scss';
+
+.dashboardBox {
+    width: 49%;
+    height: 185px;
+    border-radius: 15px;
+    overflow: hidden;
+    padding: 26px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    
+    @include sm{
+        width: 48.5%;
+    }
+    @include xs{
+        width: 100%;
+    }
+
+
+    .col1 {
+        h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        span {
+            font-size: 35px;
+            color: #fff;
+            font-weight: bold;
+            line-height: 45px;
+        }
+
+    }
+
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.3));
+
+        svg {
+            font-size: 32px;
+            opacity: 0.5;
+            color: #fff;
+        }
+    }
+
+    .d-flex {
+        h6 {
+            margin-top: 0;
+            margin-bottom: 0;
+            color: #fff;
+        }
+
+        .toggleIcon {
+            margin-left: auto;
+            font-size: 22px;
+            color: rgba(255, 255, 255, 0.7);
+            min-width: 40px !important;
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    }
+
+    .trending {
+        position: absolute;
+        bottom: 20px;
+        left: 25px;
+
+        svg {
+            font-size: 115px;
+            opacity: 0.1;
+            color: black;
+        }
+    }
+}
+
+#long-menu {
+    p {
+        padding-left: 10px;
+        margin-bottom: 0 !important;
+    }
+}

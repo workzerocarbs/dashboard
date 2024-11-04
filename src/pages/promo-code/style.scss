@@ -1,0 +1,261 @@
+@import '../../mixins.scss';
+
+$colors: (
+    0: #56d798,
+    1: #ff6f61,
+    2: #f8b400,
+    3: #0277bd,
+    4: #6a1b9a,
+);
+
+.add-promo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1.5px solid rgba(197, 197, 197, 0.816);
+
+
+    button {
+        color: var(--primary-text);
+        height: 45px;
+        font-size: 15px;
+        border-radius: 0px;
+        padding: 10px 12px;
+        text-transform: capitalize;
+
+        &.active {
+            border-bottom: 4.5px solid #92cc11;
+        }
+    }
+
+}
+
+.promo-list {
+
+    .promo-form {
+        background: var(--header-background);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        margin: 20px 0;
+        padding: 20px;
+        overflow: hidden;
+
+        form {
+            label {
+                color: var(--primary-text);
+                margin-bottom: 5px;
+                font-weight: 650;
+            }
+
+            .form-content {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
+                width: 100%;
+                margin-bottom: 12px;
+
+                @include lg {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                @include md {
+                    grid-template-columns: 1fr;
+                }
+
+                div {
+                    display: flex;
+                    flex-direction: column;
+
+                    input,
+                    select {
+                        height: 45px;
+                        padding: 0 12px;
+                        border: 1.75px solid #8cc709;
+                        border-radius: 0.3rem;
+                        outline: 0;
+                    }
+
+                    .form-select:focus {
+                        box-shadow: none;
+                    }
+                }
+            }
+
+            .textbox {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+
+                textarea {
+                    height: 100px;
+                    padding: 8px 12px;
+                    border: 1.75px solid #8cc709;
+                    border-radius: 0.3rem;
+                    outline: 0;
+                }
+            }
+
+            button {
+                width: 100px;
+                color: #fff;
+                background: #8cc709 !important;
+            }
+        }
+    }
+
+    .tabs {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 15px;
+
+        button {
+            width: 175px;
+            color: var(--primary-text);
+            font-weight: 600;
+            text-transform: none;
+            border-radius: 0px;
+            border: 1px solid #56d798;
+
+            &.active {
+                background: rgba(139, 199, 9, 0.6509803922);
+                border: 1px solid transparent;
+            }
+
+            span {
+                margin-left: 5px;
+            }
+        }
+    }
+
+    .promo-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding-left: 0;
+        margin-top: 25px;
+
+        @include xl {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include sm {
+            grid-template-columns: 1fr;
+        }
+
+        .promo-body {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 205px;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+
+            .leftbox {
+                width: 85%;
+                background: #fbf3ec;
+                height: 100%;
+
+                .content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    gap: 18px;
+                    width: 100%;
+                    height: 100%;
+                    color: #000;
+                    padding: 15px 12px;
+
+                    .heading {
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        span {
+                            height: 25px;
+                            padding: 0px 10px;
+                            font-size: 13px;
+                            font-weight: 550;
+                            text-transform: capitalize;
+                            border-radius: 6px;
+
+                            &.active {
+                                color: #8cc709;
+                                border: 2px solid #8cc709;
+                            }
+
+                            &.inactive {
+                                color: red;
+                                border: 2px solid red;
+                            }
+                        }
+
+                        h1 {
+                            font-size: 30px;
+                            font-weight: 650;
+                            text-transform: uppercase;
+                            margin-bottom: 0;
+                        }
+                    }
+
+                    .body {
+
+                        p {
+                            font-size: 14px;
+                            line-height: 20px;
+                            color: rgba(41, 41, 41, 0.822);
+                            margin-bottom: 5px;
+
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+
+                    button {
+                        width: 100%;
+                        border: 1.5px solid red;
+                        color: red;
+                    }
+                }
+            }
+
+            .rightBox {
+                width: 15%;
+                height: 100%;
+
+                @each $index, $color in $colors {
+                    &-#{$index} {
+                        background: $color;
+                    }
+                }
+
+                .content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                    color: #fff;
+                    writing-mode: vertical-rl;
+                    transform: rotate(180deg);
+                    padding: 0;
+
+                    h4 {
+                        font-size: 22px;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.dialog-headding {
+    font-weight: 650;
+    text-transform: uppercase;
+}
