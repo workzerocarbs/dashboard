@@ -10,6 +10,7 @@ import Sidebar from "./components/sidebar/Sidebar";
 import useLocalStorage from "./hooks/useLocalStorage";
 import CategoryList from "./pages/menu/category/CategoryList";
 import AddItem from "./pages/menu/item/AddItem";
+import AddOn from "./pages/menu/add-on/AddOn";
 import ViewAll from "./pages/menu/viewAll/ViewAll";
 import ViewExpenses from "./pages/expenses/view-expenses/ViewExpenses";
 import AddNew from "./pages/expenses/add-new/AddNew";
@@ -86,6 +87,7 @@ function App() {
                       <Route path="/menu/category" exact element={<CategoryList />} />
                       <Route path="/menu/category/:id" exact element={<CategoryList />} />
                       <Route path="/menu/item" exact element={<AddItem />} />
+                      <Route path="/menu/add-on-group" exact element={<AddOn />} />
                       <Route path="/menu/view-menu" exact element={<ViewAll />} />
                       <Route path="/menu/view-menu/:id" exact element={<ViewAll />} />
                       <Route path="/orders/new-orders" exact element={<Orders />} />

@@ -42,6 +42,12 @@ export const endpoints = {
   addNutrition: '/menu/nutrition',
   deleteNutritionById: (id) => `/menu/nutrition/${id}`,
 
+
+  //Add on
+  createAddOn: '/menu/addon/create',
+  getAllAddOns: '/menu/addon',
+  addAddOnToItem:'/menu/addon/add',
+
   // Discount Coupon
   addCoupon: '/coupon',
   getCoupon: '/coupon',
