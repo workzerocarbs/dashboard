@@ -42,6 +42,7 @@ const ItemContent = ({ item }) => {
                     const fetchedMenuById = await fetchMenuItemById(categoryId);
                     const item = fetchedMenuById.data;
                     setMenuItems([item]);
+                   
                     setToggleStates([{
                         isToggled: item.status !== undefined ? !!item.status : true,
                         label: item.status !== undefined ? (item.status ? 'In Stock' : 'Out of Stock') : 'In Stock',
@@ -66,6 +67,7 @@ const ItemContent = ({ item }) => {
         };
         getItems();
         setActiveTab('All');
+       
     }, [id, item.id]);
 
     const handleTabClick = async (tab) => {
@@ -74,7 +76,6 @@ const ItemContent = ({ item }) => {
             const lowerCaseTab = tab.toLowerCase();
             
             const fetchedMenuItems = await toggleTypeCategory(lowerCaseTab, categoryId);
-
             if (fetchedMenuItems && fetchedMenuItems.data) {
                 const items = fetchedMenuItems.data.map(item => ({
                     ...item,
@@ -93,6 +94,7 @@ const ItemContent = ({ item }) => {
             console.error("Error toggling category:", err);
         }
     };
+
 
     const handleToggle = (index) => {
         const newToggleStates = [...toggleStates];
@@ -195,11 +197,26 @@ const ItemContent = ({ item }) => {
         if (activeTab === 'Non-Veg') return detail.type === 'non-veg';
     });
 
+    // Quick fix of not loading all menu items
+
+    function clickAllButton() {
+        const allBtn = document.getElementById('allBtn');
+        if (allBtn) {
+          allBtn.click();
+        }
+      }
+      
+      useEffect(() => {
+        // Delay the click to ensure the DOM is fully rendered
+        setTimeout(clickAllButton, 500);
+      }, []);
+      
+
     return (
         <div className="itemContent">
             <h2>{item.name}</h2>
             <div className="tabs">
-                <button className={activeTab === 'All' ? 'active' : ''} onClick={() => handleTabClick('All')}>All</button>
+                <button id='allBtn' className={activeTab === 'All' ? 'active' : ''} onClick={() => handleTabClick('All')}>All</button>
                 <button className={activeTab === 'Veg' ? 'active' : ''} onClick={() => handleTabClick('Veg')}>Veg</button>
                 <button className={activeTab === 'Non-Veg' ? 'active' : ''} onClick={() => handleTabClick('Non-Veg')}>Non-Veg</button>
             </div>

@@ -281,9 +281,13 @@
     color: #c0392b;
   }
   .add-on-save-btn {
+    margin-top: 10px;
     float: right;
-    margin-top: 20px;
-    padding: 3px 20px 3px 20px;
-    color: var(--primary-text);
-    background-color: #B3DB5F;
+    margin-right: 0px;
+    padding: 7px 25px 7px 25px;
+    background-color: #39B939;
+    border-radius: 3px;
+    color: white;
+    outline: none;
+    border: none;
   }

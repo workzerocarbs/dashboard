@@ -133,3 +133,14 @@ export const toggleStockStatus = async (id, status, statusChangeTime) => {
         throw error;
     }
 };
+
+
+// get alll menu data from the frontend to get addons details
+export const getAllMenu = async () =>{
+    try {
+        const response = await apiClient.get(endpoints.getAllMenu);
+        return response.data;
+    } catch (error) {
+        console.log(error)
+    }
+}

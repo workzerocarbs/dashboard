@@ -4,19 +4,36 @@
 .add-on-header{
   background-color: white;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  margin: auto;
+  background-color: var(--header-background);
 }
 .add-on-header span{
   font-weight: 600;
+  font-size: 18px;
 }
 .add-on-header button {
-  padding: 7px;
-  background-color: #AFD75B;
-  border-radius: 5px;
-} 
+  padding: 3px 10px;
+  background-color: #97CB2B;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 14px; /* Making the button text smaller */
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Adding space between text and plus symbol */
+}
+
+.add-on-header button span {
+  font-size: 18px; /* Making the plus symbol larger */
+  font-weight: bold;
+  line-height: 1;
+}
 
 .add-on-items-container{
   margin-top: 50px;
@@ -35,11 +52,12 @@
   margin-top: 10px;
   margin-left: 30px;
   margin-right: 50px;
+  background-color: var(--header-background);
 }
 .add-on-item-header{
   display: flex;
   padding: 3px;
-  border: 1px solid black;
+  border: 1px solid #c6c6c6;
   border-radius: 10px 10px 10px 10px;
   /* justify-content: space-between; */
   padding: 10px;
@@ -57,7 +75,8 @@
   display: flex;              
   align-items: center;        
   gap: 10px;                  
-  padding: 10px;              
+  padding: 10px;   
+  padding-bottom: 3px;         
 }
 
 .add-on-content-item img {
@@ -101,11 +120,11 @@
   transform: translate(-50%, -50%);
 }
 .add-on-submit-button{
-  margin-top: 50px;
+  margin-top: 10px;
   float: right;
-  margin-right: 100px;
-  padding: 3px 15px 3px 15px;
-  background-color: #88c407;
+  margin-right: 50px;
+  padding: 7px 25px 7px 25px;
+  background-color: #39B939;
   border-radius: 3px;
   color: white;
   outline: none;

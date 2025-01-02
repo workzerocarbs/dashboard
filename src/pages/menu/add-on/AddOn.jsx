@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./addOn.css";
+import { getAllAddOns } from "../../../utils/AddOnAPI";
 
 const AddOn = () => {
   const [activeIndex, setActiveIndex] = useState(null);
+  const [addOns, setAddOns] = useState([]);
 
   const handleToggle = (id) => {
     setActiveIndex((prevIndex) => (prevIndex === id ? null : id));
   };
 
-  const addOnItemsArr =[
+  const addOnItemsArr = [
     {
       id: "section-1", // Unique ID for the section
       title: "Section 1",
@@ -39,56 +41,67 @@ const AddOn = () => {
       ],
     },
   ];
-  return (
-    <div className="add-on-conatiner">
-      <div className="add-on-header">
-        <span>Choose Your Addon</span>
-        <button>Create Add Group +</button>
-      </div>
 
-      <div className="add-on-items-container">
-        {addOnItemsArr.map((item) => (
-          <div key={item.id} className="add-on-item">
+  useEffect(() => {
+    ( async () =>{
+      const response = await getAllAddOns();
+      console.log(response)
+      setAddOns(response?.data)
+    })()
+  }, []);
+
+  useEffect(() =>{
+    console.log(addOns)
+  },[addOns])
+  return (
+    <div className="zpt-add-on-container">
+      {/* <div className="zpt-add-on-header">
+      <span>Choose Your Addon</span>
+      <button>Create Add Group +</button>
+    </div>
+   */}
+      <div className="zpt-add-on-items-container">
+        <h1>Add-ons Groups</h1>
+        {addOns && addOns.map((item) => (
+          <div key={item?.id} className="zpt-add-on-item">
             <div
-              className="add-on-item-header"
-              onClick={() => handleToggle(item.id)}
+              className="zpt-add-on-item-header"
+              onClick={() => handleToggle(item?.id)}
             >
-              <img src='/arrow-down.svg'/>
-              <span>{item.title}</span>
-              <input
-                type="checkbox"
-                id="add-on"
-                name="add-on"
-                value="add-on"
-                className="add-check-box"
-                onClick={(e) => e.stopPropagation()} 
-              ></input>
+              <img src="/arrow-down.svg" alt="arrow" />
+              <span>{item?.name}</span>
+              {/* <input
+              type="checkbox"
+              id="add-on"
+              name="add-on"
+              value="add-on"
+              className="zpt-add-check-box"
+              onClick={(e) => e.stopPropagation()} 
+            /> */}
             </div>
             <div
-              className={`add-on-item-content ${
-                activeIndex === item.id ? "open" : ""
+              className={`zpt-add-on-item-content ${
+                activeIndex === item.id ? "zpt-open" : ""
               }`}
             >
-              {item.content.map((addOns) => (
-                <div key={addOns.id} className="add-on-content-item">
+              {item?.items.map((addOns) => (
+                <div key={addOns.id} className="zpt-add-on-content-item">
                   <img
-                    src={`${
-                      addOns.isVeg ? "/veg.svg" : "/non-veg.svg"
-                    }`}
-                    alt={addOns.name}
+                    src={`${addOns?.type == "veg"  ? "/veg.svg" : "/non-veg.svg"}`}
+                    alt={addOns?.item}
                   />
-                  <span>{addOns.name}</span>
-                  <span>&#8377; {addOns.price}</span>
+                  <span>{addOns?.item}</span>
+                  <span>&#8377; {addOns?.price}</span>
                 </div>
               ))}
             </div>
           </div>
         ))}
       </div>
-
-      <button className="add-on-submit-button">
-        Submit
-      </button>
+      {/*   
+    <button className="zpt-add-on-submit-button">
+      Submit
+    </button> */}
     </div>
   );
 };

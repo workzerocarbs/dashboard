@@ -6,7 +6,8 @@ import Button from "@mui/material/Button";
 import { MdDeleteForever } from "react-icons/md";
 import { fetchCategories } from "../../../utils/CategoryAPI";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { createAddOn, getAllAddOns ,addAddon} from "../../../utils/AddOnAPI";
+import { createAddOn, getAllAddOns, addAddon } from "../../../utils/AddOnAPI";
+import { fetchMenuItemById, getAllMenu } from "../../../utils/MenuAPI";
 
 import {
   addItem,
@@ -81,13 +82,11 @@ const AddItem = () => {
     getCategories();
   }, []);
 
-
-
   useEffect(() => {
     if (location.state && location.state.itemData) {
       setFormData(location.state.itemData);
       setItemId(location.state.itemData.id); // Access id from itemData
-      if(location?.state?.isEdit === true){
+      if (location?.state?.isEdit === true) {
         setShowAddOn(true);
       }
     }
@@ -150,7 +149,7 @@ const AddItem = () => {
         description: "",
         price: "",
       });
-      if(response.data.id){
+      if (response.data.id) {
         setShowAddOn(true);
       }
       if (refs.image.current) {
@@ -210,6 +209,15 @@ const AddItem = () => {
   const handleNutritionSubmit = async (e) => {
     e.preventDefault();
 
+    // for now if isEdit is true just set SetNutrients to false and return if later if editing nutri value API is available change it
+
+    if (isEdit == true) {
+      setShowNutrients(false);
+      setSowSelectedAddOns(false);
+      return;
+    }
+    setSowSelectedAddOns(false);
+
     if (!itemId) {
       toast.error("Please fill out the item form first!");
       return;
@@ -260,7 +268,7 @@ const AddItem = () => {
   const [addOnGroups, setAddOnGroups] = useState([]);
   const [checkedAddons, setCheckedAddons] = useState([]);
   const [showNutrients, setShowNutrients] = useState(false);
-  const [showAddOn , setShowAddOn] = useState(false);
+  const [showAddOn, setShowAddOn] = useState(false);
 
   const [addOnFormData, setAddOnFormData] = useState({
     group_name: "",
@@ -476,24 +484,87 @@ const AddItem = () => {
     console.log(addOnGroups);
   }, [addOnGroups]);
 
-
-// handle when user click on next in submit addon
+  // handle when user click on next in submit addon
   async function handleAddOnSubmit() {
-    if(checkedAddons.length == 0){
+    if (checkedAddons.length == 0) {
       setShowAddOn(false);
       setShowNutrients(true);
       return;
-    }
-    else{
-      const res =  await addAddon(itemId , checkedAddons);
-      if(res == "ok"){
+    } else {
+      const res = await addAddon(itemId, checkedAddons);
+      if (addOnGroups && addOnGroups.length > 0) {
+        const selectedAddOns = addOnGroups.filter((addOn) =>
+          checkedAddons.includes(addOn.id)
+        );
+        setSelectedAddons(selectedAddOns);
+        setSowSelectedAddOns(true);
+      }
+      if (res == "ok") {
         setShowAddOn(false);
         setShowNutrients(true);
       }
     }
+    console.log(checkedAddons);
   }
 
   // end
+
+  // fetching existing nutrients values
+
+  const [fetchedNutrients, setFetchedNutrients] = useState({});
+  const [fetchedItemAddon, setFetchedItemAddon] = useState({});
+
+  useEffect(() => {
+    if (isEdit && itemId) {
+      (async () => {
+        const response = await fetchMenuItemById(itemId);
+        if (response.data?.nutritions.length > 0) {
+          setFetchedNutrients(response.data.nutritions);
+        } else {
+          setFetchedNutrients([]);
+        }
+      })();
+    }
+  }, [itemId]);
+
+  useEffect(() => {
+    (async () => {
+      if (isEdit && itemId) {
+        const res = await getAllMenu();
+
+        // Combine all items into one variable
+        const allItems = res.data.flatMap((menu) => menu.items);
+
+        // Iterate and find the item with matching itemId
+        const matchedItem = allItems.find((item) => item.id === itemId);
+
+        // If a match is found and addons exist, set the fetchedItemAddon state
+        if (matchedItem && matchedItem.addons) {
+          setFetchedItemAddon(matchedItem.addons);
+          console.log(matchedItem);
+        } else {
+          setFetchedItemAddon({}); // Reset if no match or addons don't exist
+        }
+      }
+    })();
+  }, [fetchedNutrients, isEdit, itemId]);
+
+  async function handleFetchNutri(id) {
+    const response = await deleteNutritionValue(id);
+    console.log(response);
+    if (response.success == true) {
+      setFetchedNutrients(fetchedNutrients.filter((item) => item.id != id));
+    }
+  }
+
+  //end
+
+  // Show Selected Addons
+
+  const [selectedAddOns, setSelectedAddons] = useState([]);
+  const [showSelectedAddOns, setSowSelectedAddOns] = useState(false);
+
+  //end
 
   return (
     <>
@@ -793,104 +864,31 @@ const AddItem = () => {
             </div>
           )}
 
-          {showNutrients && itemId !== null && (
-          <form onSubmit={handleNutritionSubmit}>
-            <div className="form-section nutrition-form">
-              <div className="type-section">
-                <h4>Nutrition Values</h4>
-                {nutriValues.map((nutriValue, index) => (
-                  <div key={index} className="type-value">
-                    <div className="inputFields">
-                      <label>Type</label>
-                      <select
-                        name="type"
-                        value={nutriValue.type}
-                        onChange={(e) => handleTypeValueChange(e, index)}
-                      >
-                        <option value="select">Select Type</option>
-                        <option value="Kcal">Kcal</option>
-                        <option value="Protein">Protein</option>
-                        <option value="Carbs">Carbs</option>
-                        <option value="Fats">Fats</option>
-                      </select>
-                      {errors[`nutriValues-${index}-type`] && <p className="error">{errors[`nutriValues-${index}-type`]}</p>} 
-                    </div>
-                    <div className="inputFields">
-                      <label>Value</label>
-                      <input
-                        type="text"
-                        name="value"
-                        placeholder="Enter nutrition value"
-                        value={nutriValue.value}
-                        onChange={(e) => handleTypeValueChange(e, index)}
-                      />
-                      {errors[`nutriValues-${index}-value`] && <p className="error">{errors[`nutriValues-${index}-value`]}</p>}
-                    </div>
-                    <div className="inputFields">
-                      <label>Category</label>
-                      <select
-                        name="category"
-                        value={nutriValue.category}
-                        onChange={(e) => handleTypeValueChange(e, index)}
-                      >
-                        <option value="Select">Select Category</option>
-                        <option value="category1">None</option>
-                        <option value="category2">Grams</option>
-                      </select>
-                      {errors[`nutriValues-${index}-category`] && <p className="error">{errors[`nutriValues-${index}-category`]}</p>}
-                    </div>
-                    <Button className='deleteBtn' onClick={() => handleRemoveTypeValue(index)}>
-                      <MdDeleteForever size={30} style={{ color: 'red' }} />
-                    </Button>
-                  </div>
-                ))}
-                <div className='addNewTypeBtn'>
-                  <Button type="button" onClick={handleAddTypeValue}>Add New</Button>
-                </div>
-              </div>
-              <div className="submit-button">
-                <Button type="submit">Submit</Button>
-              </div>
-            </div>
-          </form>
-        )}
-
-          {showAddOn && itemId != null && (
+          {showSelectedAddOns && (
             <div className="add-on-conatiner">
-              <div className="add-on-header">
-                <span>Choose Your Addon</span>
-                <button onClick={handleCreateAddOnGroup}>
-                  Create Add Group +
-                </button>
+              <div
+                style={{ margin: "0px", width: "100%" }}
+                className="add-on-header"
+              >
+                <span>Selected Add Ons</span>
               </div>
 
-              <div className="add-on-items-container">
-                {addOnGroups.map((addOnGroup) => (
-                  <div key={addOnGroup.id} className="add-on-item">
+              <div
+                style={{ marginTop: "0px" }}
+                className="add-on-items-container"
+              >
+                {selectedAddOns.map((addOnGroup) => (
+                  <div
+                    style={{ marginLeft: "0px", marginRight: "0px" }}
+                    key={addOnGroup.id}
+                    className="add-on-item"
+                  >
                     <div
                       className="add-on-item-header"
                       onClick={() => handleToggle(addOnGroup.id)}
                     >
                       <img src="/arrow-down.svg" />
                       <span>{addOnGroup.name}</span>
-                      <input
-                        type="checkbox"
-                        id="add-on"
-                        name="add-on"
-                        value="add-on"
-                        className="add-check-box"
-                        onChange={(e) => {
-                          const isChecked = e.target.checked;
-                          setCheckedAddons((prev) => {
-                            if (isChecked) {
-                              return [...prev, addOnGroup.id];
-                            } else {
-                              return prev.filter((id) => id !== addOnGroup.id);
-                            }
-                          });
-                        }}
-                        onClick={(e) => e.stopPropagation()}
-                      ></input>
                     </div>
                     <div
                       className={`add-on-item-content ${
@@ -912,6 +910,241 @@ const AddItem = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {showNutrients && itemId !== null && (
+            <form onSubmit={handleNutritionSubmit}>
+              <div
+                style={{ marginTop: "50px" }}
+                className="form-section nutrition-form"
+              >
+                <div className="type-section">
+                  <h4>Nutrition Values</h4>
+                  {!isEdit && (
+                    <>
+                      {nutriValues.map((nutriValue, index) => (
+                        <div key={index} className="type-value">
+                          <div className="inputFields">
+                            <label>Type</label>
+                            <select
+                              name="type"
+                              value={nutriValue.type}
+                              onChange={(e) => handleTypeValueChange(e, index)}
+                            >
+                              <option value="select">Select Type</option>
+                              <option value="Kcal">Kcal</option>
+                              <option value="Protein">Protein</option>
+                              <option value="Carbs">Carbs</option>
+                              <option value="Fats">Fats</option>
+                            </select>
+                            {errors[`nutriValues-${index}-type`] && (
+                              <p className="error">
+                                {errors[`nutriValues-${index}-type`]}
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="inputFields">
+                            <label>Value</label>
+                            <input
+                              type="text"
+                              name="value"
+                              placeholder="Enter nutrition value"
+                              value={nutriValue.value}
+                              onChange={(e) => handleTypeValueChange(e, index)}
+                            />
+                            {errors[`nutriValues-${index}-value`] && (
+                              <p className="error">
+                                {errors[`nutriValues-${index}-value`]}
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="inputFields">
+                            <label>Category</label>
+                            <select
+                              name="category"
+                              value={nutriValue.category}
+                              onChange={(e) => handleTypeValueChange(e, index)}
+                            >
+                              <option value="Select">Select Category</option>
+                              <option value="category1">None</option>
+                              <option value="category2">Grams</option>
+                            </select>
+                            {errors[`nutriValues-${index}-category`] && (
+                              <p className="error">
+                                {errors[`nutriValues-${index}-category`]}
+                              </p>
+                            )}
+                          </div>
+
+                          <Button
+                            className="deleteBtn"
+                            onClick={() => handleRemoveTypeValue(index)}
+                          >
+                            <MdDeleteForever
+                              size={30}
+                              style={{ color: "red" }}
+                            />
+                          </Button>
+                        </div>
+                      ))}
+
+                      <div className="addNewTypeBtn">
+                        <Button type="button" onClick={handleAddTypeValue}>
+                          Add New
+                        </Button>
+                      </div>
+                    </>
+                  )}
+
+                  {isEdit &&
+                    fetchedNutrients.map((nutri) => {
+                      return (
+                        <div key={nutri?.id} className="type-value">
+                          <div className="inputFields">
+                            <label>Type</label>
+                            <select
+                              name="type"
+                              value={nutri?.type}
+                              // onChange={(e) => handleTypeValueChange(e, index)}
+                            >
+                              <option value="select">Select Type</option>
+                              <option value="Kcal">Kcal</option>
+                              <option value="Protein">Protein</option>
+                              <option value="Carbs">Carbs</option>
+                              <option value="Fats">Fats</option>
+                            </select>
+                            {/* {errors[`nutriValues-${index}-type`] && <p className="error">{errors[`nutriValues-${index}-type`]}</p>}  */}
+                          </div>
+                          <div className="inputFields">
+                            <label>Value</label>
+                            <input
+                              type="text"
+                              name="value"
+                              placeholder="Enter nutrition value"
+                              value={nutri?.value}
+                              // onChange={(e) => handleTypeValueChange(e, index)}
+                            />
+                            {/* {errors[`nutriValues-${index}-value`] && <p className="error">{errors[`nutriValues-${index}-value`]}</p>} */}
+                          </div>
+                          <div className="inputFields">
+                            <label>Category</label>
+                            <select
+                              name="category"
+                              value={nutri?.category}
+                              // onChange={(e) => handleTypeValueChange(e, index)}
+                            >
+                              <option value="Select">Select Category</option>
+                              <option value="category1">None</option>
+                              <option value="category2">Grams</option>
+                            </select>
+                            {/* {errors[`nutriValues-${index}-category`] && <p className="error">{errors[`nutriValues-${index}-category`]}</p>} */}
+                          </div>
+                          <Button
+                            className="deleteBtn"
+                            onClick={() => handleFetchNutri(nutri.id)}
+                          >
+                            <MdDeleteForever
+                              size={30}
+                              style={{ color: "red" }}
+                            />
+                          </Button>
+                        </div>
+                      );
+                    })}
+                  {/* <div className='addNewTypeBtn'>
+                  <Button type="button" onClick={handleAddTypeValue}>Add New</Button>
+                </div> */}
+                </div>
+                <div className="submit-button">
+                  <Button type="submit">Submit</Button>
+                </div>
+              </div>
+            </form>
+          )}
+
+          {showAddOn && itemId != null && (
+            <div className="add-on-conatiner">
+              <div className="add-on-header">
+                <span>Choose Your Add On</span>
+                <button onClick={handleCreateAddOnGroup}>
+                  Create Add Group <span>+</span>
+                </button>
+              </div>
+
+              <div className="add-on-items-container">
+                {addOnGroups.map((addOnGroup) => {
+                  let isAddOnChecked = false;
+                  if (fetchedItemAddon && fetchedItemAddon.length > 0) {
+                    for (let i = 0; i < fetchedItemAddon.length; i++) {
+                      if (
+                        fetchedItemAddon[i].addon_group_id === addOnGroup.id
+                      ) {
+                        isAddOnChecked = true;
+                        break;
+                      }
+                    }
+                  }
+
+                  return (
+                    <div key={addOnGroup.id} className="add-on-item">
+                      <div
+                        className="add-on-item-header"
+                        onClick={() => handleToggle(addOnGroup.id)}
+                      >
+                        <img src="/arrow-down.svg" />
+                        <span>{addOnGroup.name}</span>
+                        <input
+                          type="checkbox"
+                          id="add-on"
+                          name="add-on"
+                          value="add-on"
+                          className="add-check-box"
+                          checked={
+                            isAddOnChecked ||
+                            checkedAddons.includes(addOnGroup.id)
+                          }
+                          onChange={(e) => {
+                            const isChecked = e.target.checked;
+                            setCheckedAddons((prev) => {
+                              if (isChecked) {
+                                return [...prev, addOnGroup.id];
+                              } else {
+                                return prev.filter(
+                                  (id) => id !== addOnGroup.id
+                                );
+                              }
+                            });
+                          }}
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </div>
+                      <div
+                        className={`add-on-item-content ${
+                          activeIndex === addOnGroup.id ? "open" : ""
+                        }`}
+                      >
+                        {addOnGroup.items.map((addOns) => (
+                          <div key={addOns.id} className="add-on-content-item">
+                            <img
+                              src={`${
+                                addOns.type == "veg"
+                                  ? "/veg.svg"
+                                  : "/non-veg.svg"
+                              }`}
+                              alt={addOns.item}
+                            />
+                            <span>{addOns.item}</span>
+                            <span>&#8377; {addOns.price}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               <button
