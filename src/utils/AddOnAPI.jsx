@@ -108,7 +108,35 @@ export const createAddOn = async (formData,groupName,quantity) => {
       if(response.status == 200 || 201){
         return "ok";
       }
+      else{
+        return "notok"
+      }
     } catch (error) {
       console.log("error while adding add on",error)
     }
   }
+
+    //Remove addon to item
+
+    export const removeAddOn = async (itemId , unselectedAddOns) =>{
+      const data = {
+        item_id: itemId,
+        addon_groups: unselectedAddOns
+    }
+      try {
+        const response = await axios.post(`${base_url}${endpoints.removeAddonFromItem}`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if(response.status == 200 || 201){
+          return "ok";
+        }
+        else{
+          return "notok"
+        }
+      } catch (error) {
+        console.log("error while adding add on",error)
+      }
+    }

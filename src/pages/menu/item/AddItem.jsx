@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { MdDeleteForever } from "react-icons/md";
 import { fetchCategories } from "../../../utils/CategoryAPI";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { createAddOn, getAllAddOns, addAddon } from "../../../utils/AddOnAPI";
+import { createAddOn, getAllAddOns, addAddon , removeAddOn } from "../../../utils/AddOnAPI";
 import { fetchMenuItemById, getAllMenu } from "../../../utils/MenuAPI";
 
 import {
@@ -486,25 +486,41 @@ const AddItem = () => {
 
   // handle when user click on next in submit addon
   async function handleAddOnSubmit() {
-    if (checkedAddons.length == 0) {
+    if (checkedAddons.length == 0 && unselectedAddOns.length == 0) {
       setShowAddOn(false);
       setShowNutrients(true);
       return;
     } else {
-      const res = await addAddon(itemId, checkedAddons);
-      if (addOnGroups && addOnGroups.length > 0) {
-        const selectedAddOns = addOnGroups.filter((addOn) =>
-          checkedAddons.includes(addOn.id)
-        );
-        setSelectedAddons(selectedAddOns);
-        setSowSelectedAddOns(true);
+      if(checkedAddons.length > 0){
+        const res = await addAddon(itemId, checkedAddons);
+        if(res != "ok"){
+          return;
+        }
+        if (addOnGroups && addOnGroups.length > 0) {
+          const selectedAddOns = addOnGroups.filter((addOn) =>
+            checkedAddons.includes(addOn.id)
+          );
+          setSelectedAddons(selectedAddOns);
+          setSowSelectedAddOns(true);
+        }
+        
       }
-      if (res == "ok") {
+
+      if(unselectedAddOns.length > 0) {
+        const res = await removeAddOn(itemId , unselectedAddOns);
+        if(res != "ok"){
+          return;
+        }
+        console.log("unselect result: ",res);
+      }
+
+      // if (res == "ok") {
         setShowAddOn(false);
         setShowNutrients(true);
-      }
+      // }
     }
-    console.log(checkedAddons);
+    // console.log("checked addons: ", checkedAddons);
+    // console.log("unselected addons: ", unselectedAddOns);
   }
 
   // end
@@ -562,7 +578,12 @@ const AddItem = () => {
   // Show Selected Addons
 
   const [selectedAddOns, setSelectedAddons] = useState([]);
+  const [unselectedAddOns, setUnselectedAddOns] = useState([]);
   const [showSelectedAddOns, setSowSelectedAddOns] = useState(false);
+
+  useEffect(() => {
+    console.log(unselectedAddOns);
+  }, [unselectedAddOns]);
 
   //end
 
@@ -1104,20 +1125,35 @@ const AddItem = () => {
                           value="add-on"
                           className="add-check-box"
                           checked={
-                            isAddOnChecked ||
+                            (isAddOnChecked &&
+                              !unselectedAddOns.includes(addOnGroup.id)) ||
                             checkedAddons.includes(addOnGroup.id)
                           }
                           onChange={(e) => {
                             const isChecked = e.target.checked;
-                            setCheckedAddons((prev) => {
-                              if (isChecked) {
-                                return [...prev, addOnGroup.id];
-                              } else {
-                                return prev.filter(
-                                  (id) => id !== addOnGroup.id
-                                );
-                              }
-                            });
+
+                            if (!isChecked && isAddOnChecked) {
+                              setUnselectedAddOns((prev) => [
+                                ...prev,
+                                addOnGroup.id,
+                              ]);
+                            } else if (isChecked && isAddOnChecked) {
+                              setUnselectedAddOns((prev) =>
+                                prev.filter((id) => id !== addOnGroup.id)
+                              );
+                            }
+
+                            if (!isAddOnChecked) {
+                              setCheckedAddons((prev) => {
+                                if (isChecked) {
+                                  return [...prev, addOnGroup.id];
+                                } else {
+                                  return prev.filter(
+                                    (id) => id !== addOnGroup.id
+                                  );
+                                }
+                              });
+                            }
                           }}
                           onClick={(e) => e.stopPropagation()}
                         />

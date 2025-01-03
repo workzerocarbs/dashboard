@@ -50,6 +50,7 @@ export const endpoints = {
   createAddOn: "/menu/addon/create",
   getAllAddOns: "/menu/addon",
   addAddOnToItem: "/menu/addon/add",
+  removeAddonFromItem:"/menu/addon/remove",
 
   // Discount Coupon
   addCoupon: "/coupon",
