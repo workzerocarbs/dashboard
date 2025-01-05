@@ -191,7 +191,7 @@ const Sidebar = ({ isSidebarOpen, closeSidebar }) => {
                     }`}
                     onClick={() => handleSubmenuClick(1, 3)}
                   >
-                    Add on Group
+                    Add on Groups & Edit
                   </Link>
                 </li>
                 <li>
@@ -245,7 +245,7 @@ const Sidebar = ({ isSidebarOpen, closeSidebar }) => {
                       }`}
                       onClick={() => handleSubmenuClick(1, 3)}
                     >
-                      Add on Group
+                      Add on Groups & Edit
                     </Link>
                   </li>
                   <li>

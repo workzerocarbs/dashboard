@@ -51,6 +51,8 @@ export const endpoints = {
   getAllAddOns: "/menu/addon",
   addAddOnToItem: "/menu/addon/add",
   removeAddonFromItem:"/menu/addon/remove",
+  updateAddOn:(id) => `/menu/addon/update/${id}`,
+  deleteAddOnById:(id) => `/menu/addon/item/${id}`,
 
   // Discount Coupon
   addCoupon: "/coupon",
