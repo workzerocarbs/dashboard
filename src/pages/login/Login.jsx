@@ -1,100 +1,13 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-// import React, { useEffect, useState } from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
-// import '../login/style.scss';
-// import { FaRegEnvelope, FaKey, FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-// import Button from '@mui/material/Button';
-
-// const Login = ({ onLogin }) => {
-//   const [username, setUsername] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [showPassword, setShowPassword] = useState(false);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     document.title = "ZeroCarbs | Login";
-//   }, []);
-
-//   const handleLogin = (e) => {
-//     e.preventDefault();
-//     if (username === 'demo@example.com' && password === 'password') {
-//       localStorage.setItem('isAuthenticated', 'true');
-//       onLogin(true);
-//       navigate('/dashboard');
-//     } else {
-//       alert('Invalid credentials');
-//     }
-//   };
-
-//   const togglePasswordIcon = () => {
-//     setShowPassword(!showPassword);
-//   };
-
-//   const handleForgotPasswordClick = () => {
-//     navigate('/reset-password');
-//   };
-
-//   return (
-//     <div className="login-container">
-//       <div className="login-form">
-//         <h2>Zero<span>Carbs</span></h2>
-//         <form onSubmit={handleLogin}>
-//           <div className="input-field">
-//             <input
-//               type="text"
-//               placeholder="Email"
-//               value={username}
-//               onChange={(e) => setUsername(e.target.value)}
-//             />
-//             <FaRegEnvelope className='icon' size={22} />
-//           </div>
-//           <div className="input-field">
-//             <input
-//               type={showPassword ? 'text' : 'password'}
-//               placeholder="Password"
-//               value={password}
-//               onChange={(e) => setPassword(e.target.value)}
-//             />
-//             <FaKey className='icon' size={22} />
-//             {showPassword ? (
-//               <FaRegEye className='show-hide' size={22} onClick={togglePasswordIcon} />
-//             ) : (
-//               <FaRegEyeSlash className='show-hide' size={22} onClick={togglePasswordIcon} />
-//             )}
-//           </div>
-//           <div className="checkbox-text">
-//             <div className="checkbox-content">
-//               <input type="checkbox" id="logCheck" />
-//               <label className="text">Remember Me</label>
-//             </div>
-//             <button type='button' onClick={handleForgotPasswordClick} className="forgot-text">Forgot Password</button>
-//           </div>
-//           <Button className='login-btn' type='submit'>Login</Button>
-//         </form>
-//         <div className="login-signup">
-//           <span className="text">Don&apos;t have an account?</span>
-//           <Link to="/signup" className="signup-link">SignUp Here</Link>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Login;
-
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../utils/LoginAPI';
-import '../login/style.scss';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../utils/LoginAPI";
+import "../login/style.scss";
 import { FaRegEnvelope, FaKey, FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 
 const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -106,19 +19,19 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     try {
       const response = await login(username, password);
-      console.log(response)
+      console.log(response);
       if (response.data.success) {
         const token = response.data.data.access_token;
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('authToken', token);
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("authToken", token);
         onLogin(true);
-        navigate('/dashboard');
+        navigate("/dashboard");
       } else {
-        alert('Invalid credentials');
+        alert("Invalid credentials");
       }
     } catch (error) {
-      console.error('Error during authentication:', error);
-      alert('Error during authentication');
+      console.error("Error during authentication:", error);
+      alert("Error during authentication");
     }
   };
 
@@ -127,13 +40,15 @@ const Login = ({ onLogin }) => {
   };
 
   const handleForgotPasswordClick = () => {
-    navigate('/reset-password');
+    navigate("/reset-password");
   };
 
   return (
     <div className="login-container">
       <div className="login-form">
-        <h2>Zero<span>Carbs</span></h2>
+        <h2>
+          Zero<span>Carbs</span>
+        </h2>
         <form onSubmit={handleLogin}>
           <div className="input-field">
             <input
@@ -142,20 +57,28 @@ const Login = ({ onLogin }) => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-            <FaRegEnvelope className='icon' size={22} />
+            <FaRegEnvelope className="icon" size={22} />
           </div>
           <div className="input-field">
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <FaKey className='icon' size={22} />
+            <FaKey className="icon" size={22} />
             {showPassword ? (
-              <FaRegEye className='show-hide' size={22} onClick={togglePasswordIcon} />
+              <FaRegEye
+                className="show-hide"
+                size={22}
+                onClick={togglePasswordIcon}
+              />
             ) : (
-              <FaRegEyeSlash className='show-hide' size={22} onClick={togglePasswordIcon} />
+              <FaRegEyeSlash
+                className="show-hide"
+                size={22}
+                onClick={togglePasswordIcon}
+              />
             )}
           </div>
           <div className="checkbox-text">
@@ -163,13 +86,23 @@ const Login = ({ onLogin }) => {
               <input type="checkbox" id="logCheck" />
               <label className="text">Remember Me</label>
             </div>
-            <button type='button' onClick={handleForgotPasswordClick} className="forgot-text">Forgot Password</button>
+            <button
+              type="button"
+              onClick={handleForgotPasswordClick}
+              className="forgot-text"
+            >
+              Forgot Password
+            </button>
           </div>
-          <Button className='login-btn' type='submit'>Login</Button>
+          <Button className="login-btn" type="submit">
+            Login
+          </Button>
         </form>
         <div className="login-signup">
           <span className="text">Don&apos;t have an account?</span>
-          <Link to="/signup" className="signup-link">SignUp Here</Link>
+          <Link to="/signup" className="signup-link">
+            SignUp Here
+          </Link>
         </div>
       </div>
     </div>
