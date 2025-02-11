@@ -16,7 +16,8 @@ const orderCancelationReason = [
 ];
 
 function OrderModalItem({ receivedOrderedItem }) {
-  const { handleUpdatePreparingItems } = useReceivedOrder();
+  const { handleUpdatePreparingItems, handleUpdateRejectedOrders } =
+    useReceivedOrder();
   const [minutesToPrepare, setMinutesToPrepare] = useState(22);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [cancelationReason, setCancelationReason] = useState("");
@@ -26,12 +27,15 @@ function OrderModalItem({ receivedOrderedItem }) {
   function handleOpenRejectionConfirmation() {
     setIsConfirmationModalOpen(true);
   }
+
   function handleConfirmRejection() {
     if (cancelationReason) {
-      console.log("REJECTED");
-      // THE CODE TO REMOVE THE REJECTED OBJECT FROM THE STATE GOES HERE
+      handleUpdateRejectedOrders({
+        cancelationReason,
+        orderID: receivedOrderedItem.id,
+      });
       setIsConfirmationModalOpen(false);
-      setCancelationReason("");
+      setCancelationReason(""); // clear resason after successfully cancelled
     }
   }
   function handleCancelRejection() {
@@ -266,7 +270,7 @@ function OrderModalItem({ receivedOrderedItem }) {
                     id={value}
                     value={value}
                     checked={cancelationReason === value}
-                    onClick={() => setCancelationReason(value)}
+                    onChange={() => setCancelationReason(value)}
                   />
                 </div>
               ))}

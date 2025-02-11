@@ -6,6 +6,7 @@ function ReceivedOrderProvider({ children }) {
   const [toggleNotificationModal, setToggleNotificationModal] = useState(false);
   const [receivedOrderedItems, setReceivedOrderedItems] = useState([]); // State to store the order data got from the pusher callback
   const [preparingItems, setPreparingItems] = useState([]);
+  const [rejectedOrders, setRejectedOrders] = useState([]);
 
   const handleUpdateReceivedOrderedItems = useCallback(function (item) {
     setReceivedOrderedItems((curr) => [...curr, item]);
@@ -39,6 +40,21 @@ function ReceivedOrderProvider({ children }) {
     }
   }, []);
 
+  const handleUpdateRejectedOrders = useCallback(function (cancelReasonData) {
+    // Storing cancel reason and order-id
+    setRejectedOrders((currOrderCancelationReason) => [
+      ...currOrderCancelationReason,
+      cancelReasonData,
+    ]);
+
+    // Removing cancel item from received orders
+    setReceivedOrderedItems((curr) =>
+      curr.filter((item) => item.id !== cancelReasonData.orderID)
+    );
+  }, []);
+
+  console.log("rejectedOrders", rejectedOrders);
+
   return (
     <ReceivedOrderContext.Provider
       value={{
@@ -48,6 +64,8 @@ function ReceivedOrderProvider({ children }) {
         handleUpdateReceivedOrderedItems,
         preparingItems,
         handleUpdatePreparingItems,
+        handleUpdateRejectedOrders,
+        rejectedOrders,
       }}
     >
       {children}
