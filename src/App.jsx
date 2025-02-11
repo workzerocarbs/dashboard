@@ -1,9 +1,15 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import '../src/App.scss';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-toastify/dist/ReactToastify.css'
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  createBrowserRouter,
+} from "react-router-dom";
+import "../src/App.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Header from "./components/header/Header";
 import Sidebar from "./components/sidebar/Sidebar";
@@ -20,14 +26,52 @@ import OrderHistory from "./pages/orders/order-history/OrderHistory";
 import Coupons from "./pages/coupons/Coupons";
 import Login from "./pages/login/Login";
 import Promo from "./pages/promo-code/Promo";
-import Signup from "./pages/signup/Signup";
-import ForgotPasswordForm from "./pages/reset-password/ForgotPasswordForm ";
-import { PusherProvider } from "./pusherService";
+import { PusherProvider, usePusher } from "./context/PusherContext";
+
+import axios from "axios";
+import OrderModal from "./pages/orders/orders-modal/OrderModal";
+import AppLayout from "./components/app_layout/AppLayout";
+import { useReceivedOrder } from "./context/ReceivedOrderContext";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768);
   const [theme, setTheme] = useLocalStorage("theme", "dark");
-  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem("isAuthenticated") === "true"
+  );
+  const pusher = usePusher(); // Get the Pusher instance from context
+  const { toggleNotificationModal, handleUpdateReceivedOrderedItems } =
+    useReceivedOrder(); // Get the state's and setter's for received orders
+
+  // Effect to subscribe to order notifications when Pusher is available
+  useEffect(
+    function () {
+      // if (!pusher) {
+      //   console.error("Pusher instance is not available.");
+      //   return;
+      // }
+
+      const channel = pusher?.subscribe("order-notifications-channel");
+
+      channel?.bind("order-notification-event", async (data) => {
+        // console?.log("New order notification:", data);
+        const resOrderDetails = await axios.get(
+          `https://api.zerocarbs.in/api/web/order/get/${data?.data?.order_id}`
+        );
+        // console.log(resOrderDetails?.data);
+        const resultData = resOrderDetails?.data?.data;
+        handleUpdateReceivedOrderedItems(resultData);
+      });
+
+      return () => {
+        if (channel) {
+          channel.unbind_all();
+          pusher.unsubscribe("order-notifications-channel");
+        }
+      };
+    },
+    [pusher, handleUpdateReceivedOrderedItems]
+  );
 
   // Login
   const onLogin = (status) => {
@@ -64,40 +108,95 @@ function App() {
   }, []);
 
   return (
-    <PusherProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login onLogin={onLogin} />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/reset-password" element={<ForgotPasswordForm />} />
         <Route
           path="*"
           element={
             isAuthenticated ? (
               <>
-                <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} toggleTheme={toggleTheme} theme={theme} />
-                <div className={`main ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+                {/* FIXME */}
+                {toggleNotificationModal && <OrderModal />}
+                <Header
+                  toggleSidebar={toggleSidebar}
+                  isSidebarOpen={isSidebarOpen}
+                  toggleTheme={toggleTheme}
+                  theme={theme}
+                />
+                <div
+                  className={`main ${
+                    isSidebarOpen ? "sidebar-open" : "sidebar-closed"
+                  }`}
+                >
                   <div className="sidebarWrapper">
-                    <Sidebar isSidebarOpen={isSidebarOpen} closeSidebar={closeSidebar} />
+                    <Sidebar
+                      isSidebarOpen={isSidebarOpen}
+                      closeSidebar={closeSidebar}
+                    />
                   </div>
                   <div className="content">
                     <Routes>
-                      <Route path="/" exact element={<Navigate to="/dashboard" />} />
+                      <Route
+                        path="/"
+                        exact
+                        element={<Navigate to="/dashboard" />}
+                      />
                       <Route path="/dashboard" exact element={<Dashboard />} />
-                      <Route path="/menu/category" exact element={<CategoryList />} />
-                      <Route path="/menu/category/:id" exact element={<CategoryList />} />
+                      <Route
+                        path="/menu/category"
+                        exact
+                        element={<CategoryList />}
+                      />
+                      <Route
+                        path="/menu/category/:id"
+                        exact
+                        element={<CategoryList />}
+                      />
                       <Route path="/menu/item" exact element={<AddItem />} />
-                      <Route path="/menu/add-on-group" exact element={<AddOn />} />
-                      <Route path="/menu/view-menu" exact element={<ViewAll />} />
-                      <Route path="/menu/view-menu/:id" exact element={<ViewAll />} />
-                      <Route path="/orders/new-orders" exact element={<Orders />} />
-                      <Route path="/orders/order-history" exact element={<OrderHistory />} />
-                      <Route path="/expenses/add-new" exact element={<AddNew />} />
-                      <Route path="/expenses/view-expenses" exact element={<ViewExpenses />} />
+                      <Route
+                        path="/menu/add-on-group"
+                        exact
+                        element={<AddOn />}
+                      />
+                      <Route
+                        path="/menu/view-menu"
+                        exact
+                        element={<ViewAll />}
+                      />
+                      <Route
+                        path="/menu/view-menu/:id"
+                        exact
+                        element={<ViewAll />}
+                      />
+                      <Route
+                        path="/orders/new-orders"
+                        exact
+                        element={<Orders />}
+                      />
+                      <Route
+                        path="/orders/order-history"
+                        exact
+                        element={<OrderHistory />}
+                      />
+                      <Route
+                        path="/expenses/add-new"
+                        exact
+                        element={<AddNew />}
+                      />
+                      <Route
+                        path="/expenses/view-expenses"
+                        exact
+                        element={<ViewExpenses />}
+                      />
                       <Route path="/coupons" exact element={<Coupons />} />
                       <Route path="/coupons/:id" exact element={<Coupons />} />
                       <Route path="/promo-code" exact element={<Promo />} />
-                      <Route path="/notifications" exact element={<Notifications />} />
+                      <Route
+                        path="/notifications"
+                        exact
+                        element={<Notifications />}
+                      />
                     </Routes>
                   </div>
                 </div>
@@ -109,7 +208,6 @@ function App() {
         />
       </Routes>
     </BrowserRouter>
-    </PusherProvider>
   );
 }
 
